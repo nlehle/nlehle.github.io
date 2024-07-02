@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Zugriff auf Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family-Roboto:wght@380;700&display-swap" rel="stylesheet"/>
+    <script src="https://kit.fontawesome.com/ccbd4d6bc1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel='icon' type='image/png' sizes='32x32' href='./pics/favicon.png'>
+    <link rel='icon' type='image/png' sizes='96x96' href='favicon-96x96.png'>
+    <title>Minigolf</title>
+</head>
+<body>
+    <div class="screen" id="screen">
+        <i class="fas fa-volume-mute fa-2x" id="sound"></i>
+        <!-- Hintergrundsvideo -->
+        <video autoplay loop muted id="videoBackground">
+            <source src="background.mp4" type="video/mp4"></video>
+        <!-- download audio für button -->
+        <audio id="audioClick">
+            <source src="sounds/buttonclick.wav" type="audio/wav"/></audio>
+        <audio id="audioHover">
+            <source src="sounds/buttonrollover.wav" type="audio/wav"></audio>
+        <div class="menu" id="menu" style="visibility: visible;">
+            <h1>Minigolf</h1>
+            <h3>AR Game</h3>
+            <ul>
+                <li><a href="#" id="new-game">New Game</a></li>
+                <li><a href="#" id="level-preview">Level Preview</a></li>
+                <li><a href="#">Tutorial</a></li>
+                <li><a href="#">Quit</a></li>
+            </ul>
+        </div>
+        <div class="level-preview" id="level-preview-container" style="visibility: hidden;">
+            <div class="level-boxes">
+                <div class="level-box" onclick="play(1)"><img src="./pics/playgroundLvl1Screen.png" alt="Level 1"></div>
+                <div class="level-box" onclick="play(2)"><img src="./pics/playgroundLvl3Screen.png" alt="Level 2"></div>
+                <div class="level-box" onclick="play(3)"><img src="./pics/playgroundLvl3Screen.png" alt="Level 3"></div>
+            </div>
+            <i class="fa-sharp fa-regular fa-left-long fa-2x" style="color: white; justify-content: center;" id="back"></i>
+        </div>
+    </div>
+    <script src="menu.js"></script>
+    <script>
+        function play(level) {
+            window.location.href = '../myScreen/index.html?level=' + level;
+        }
+        document.getElementById('new-game').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            window.location.href = '../myScreen/index.html'; 
+        });
+
+        document.getElementById('level-preview').addEventListener('click', function(event) {
+            event.preventDefault(); // Verhindert das Standardverhalten des Links
+            document.getElementById('menu').style.visibility = 'hidden'; // Menü ausblenden
+            document.getElementById('screen').classList.add('blur'); // Hintergrund unscharf machen
+            document.getElementById('level-preview-container').style.visibility = 'visible'; // Level-Vorschau anzeigen
+        });
+
+        document.getElementById('back').addEventListener('click', function(event) {
+            document.getElementById('level-preview-container').style.visibility = 'hidden'; // Level-Vorschau ausblenden
+            document.getElementById('screen').classList.remove('blur'); // Hintergrund wieder scharf machen
+            document.getElementById('menu').style.visibility = 'visible'; // Menü anzeigen
+        });
+    </script>
+</body>
+</html>

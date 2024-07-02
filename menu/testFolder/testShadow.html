@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+  <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
+</head>
+<body>
+  <script>
+  </script>
+  <a-scene shadow="type: pcfsoft" background="color: #ADD8E6">
+
+    <a-plane position="0 0 -5" rotation="-90 0 0" width="10" height="10" color="#7BC8A4" shadow="receive: true"></a-plane>
+    <a-sphere id="ball" position="0 1.25 -5" radius="1.25" color="#EF2D5E" shadow="cast: true"></a-sphere>
+
+    <a-entity id="particle" position="0 2.25 -15"  particle-system="preset: stars" color="#000000"></a-entity>
+
+  </a-scene>
+
+</body>
+</html>

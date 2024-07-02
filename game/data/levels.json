@@ -1,0 +1,43 @@
+{
+  "levels": [
+    {
+      "name": "Level 1",
+      "objects": [{
+        "type": "playground",
+        "name": "playgroundLvl1",
+        "collision": "static",
+        "file": "/models/3D_Object/playground1New.glb",
+        "rotation": [0, -90, 0],
+        "scale": [0.2, 0.2, 0.2],
+        "offset": [-4.8, 0, 0]
+      }, {
+        "type": "flag",
+        "name": "flag",
+        "collision": "none",
+        "file": "/models/3D_Object/flag.glb",
+        "position": [-0.65, 0, -5.05],
+        "rotation": [0, 0, 0],
+        "scale": [0.5, 0.5, 0.5]
+      }]
+    },
+    {
+      "name": "Level 2",
+      "objects": [{
+        "type": "playground",
+        "name": "playgroundLvl2",
+        "collision": "static",
+        "file": "/models/3D_Object/playgroundLvl2.glb"
+      }]
+    },
+    {
+      "name": "Level 3",
+      "objects": [{
+        "type": "playground",
+        "name": "playgroundLvl3",
+        "collision": "static",
+        "file": "/models/3D_Object/playgroundLvl3.glb"
+      }]
+    }
+  ]
+}
+

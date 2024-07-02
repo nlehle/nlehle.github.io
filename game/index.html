@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Game</title>
+  <!-- <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script> -->
+  <!-- for Particle systems: 1.4.1 -->
+  <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+  <!-- Particle systems -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@master/dist/aframe-particle-system-component.min.js"></script>
+  
+  <script type="text/javascript" src="./js/level-loader.js"></script>
+  <script type="text/javascript" src="./js/game-logic.js"></script>
+  <script type="text/javascript" src="./js/ar-components.js"></script>
+  <script>
+    /**
+     * Applies an impulse to the ball in the direction the camera is looking.
+     */
+    function testPushBall() {
+      const el = document.getElementById('play-ball');
+      const camera = document.querySelector('[camera]');
+      const cameraLookVec = new THREE.Vector3();
+      camera.object3D.getWorldDirection(cameraLookVec);
+      const forceMagnitude = -5;
+      const force = new Ammo.btVector3(cameraLookVec.x, 0, cameraLookVec.z);
+      force.normalize();
+      force.op_mul(forceMagnitude);
+      el.body.activate()
+      el.body.applyCentralImpulse(force);
+      Ammo.destroy(force);
+
+      // soundeffect
+      const soundComponent = el.components.sound;
+      if (soundComponent) {
+        soundComponent.playSound();
+      }      
+    
+      golfAudio.play();
+    }
+
+    function resetBall() {
+      var playground = document.getElementById('playgroundLvl1');
+      var playgroundPos = playground.object3D.position;
+      var targetBallPos = playgroundPos.clone();
+      targetBallPos.z = 0;
+      targetBallPos.x = 0;
+      targetBallPos.y += 2;
+      const el = document.getElementById('play-ball');
+      var movingComponent = el.components['moving-dynamic-body'];
+      movingComponent.setTargetPosition({ x: targetBallPos.x, y: targetBallPos.y, z: targetBallPos.z });
+    }
+
+    function testMovePlayground() {
+      var playground = document.getElementById('playground');
+      playground.object3D.position.set(0, 4, -5);
+      playground.components['ammo-body'].syncToPhysics();
+      playground.body.activate()
+    }
+    function testLoadFlag() {
+      var url = '/GltfLoader/models/3D_Object/flag.glb'
+
+      // Add the asset item to the assets
+      var asset = document.querySelector('a-asset');
+      var assetItem = document.createElement('a-asset-item');
+      assetItem.setAttribute('id', 'flagModel');
+      assetItem.setAttribute('src', url);
+      asset.appendChild(assetItem);
+
+      // New entity with the flag model
+      var scene = document.querySelector('a-scene');
+      var entity = document.createElement('a-entity');
+
+      entity.setAttribute('id', 'flag');
+      entity.setAttribute('gltf-model', "#flagModel");
+      entity.setAttribute('position', { x: 0, y: 4, z: -5 });
+      entity.setAttribute('shadow', 'cast: true');
+
+      scene.appendChild(entity);
+    }
+    function testLoadLevel() {
+      var levelLoader = document.querySelector('[level-loader]');
+      levelLoader.components['level-loader'].loadLevel(0);
+    }
+
+    var playedParticles = false;
+    // Function to check if the ball hit the hole
+    function checkBallInHole() {
+      const ball = document.getElementById('play-ball');
+      const ballPos = ball.object3D.position;
+      const flag = document.getElementById('flag'); 
+      if (flag) {
+        const flagPos = flag.object3D.position;
+
+        const distance = ballPos.distanceTo(flagPos);
+
+        if (distance < 0.2 && !playedParticles) {
+          playedParticles = true;
+          activateParticles(flagPos); 
+        }
+      }
+    }
+
+    // Particle system activation function
+    function activateParticles(position) {
+      const particleSystem = document.createElement('a-entity');
+      particleSystem.setAttribute('particle-system', {
+        preset: 'stars',
+        color: '#ff0000, #e50000',
+        particleCount: 1000,
+        size: 1,
+        maxAge: 2
+      });
+      particleSystem.setAttribute('position', position);
+      document.querySelector('a-scene').appendChild(particleSystem);
+
+      // Play applause sound
+      const applause = document.getElementById('applause');
+      applause.play();
+    }
+    setInterval(checkBallInHole, 50);
+  </script>
+  <style>
+    /* By default, hide the DOM Overlay element. */
+    #overlay {
+        display: none;
+    }
+    /* Show the DOM Overlay element while active (:xr-overlay pseudoclass) */
+    #overlay:xr-overlay {
+        display: initial;
+    }
+    #greeting {
+        background-color: rgba(1, 1, 1, 0.25);
+        margin: 10px;
+    }
+    #exit-ar {
+        position: absolute;
+        right: 40px;
+        bottom: 40px;
+    }
+    .ar-button {
+      background: rgba(127,127,127,0.25);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 6px 8px;
+      font-weight: bold;
+      display: block;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <!-- Overlay Dom that is visible in AR Mode only -->
+  <div id="overlay">
+    <span id="greeting">
+      Hi, I'm the DOM Overlay
+    </span>
+    <button id="exit-ar" class="ar-button">Exit AR</button>
+    <button class="ar-button" id="ARresetBall" onclick="resetBall()" style="top: 150px; left: 50%; visibility: hidden;">Reset Ball</button>
+    <button class="ar-button" id="ARpushBall" onclick="testPushBall()" style="top: 200px; left: 50%;">Push Ball</button>
+    <button class="ar-button" id="ARreset" style="top: 50px; left: 250px;">Move Playground</button>
+  </div>
+ 
+
+  <div style="position: absolute; z-index: 200;">
+    <div style="display: flex;">
+      <h3 style="margin: 0;">Level</h3>
+      <p style="margin: 0; padding-left: 0.5em;" id="level-counter">0</p>
+    </div>
+    <button id="resetBall" onclick="resetBall()">Reset Ball</button>
+    <button id="reset">Reset</button>
+    <button id="pushBall" onclick="testPushBall()">Push Ball</button>
+    <button id="textMovePlayground" onclick="testMovePlayground()">Move Playground</button>
+    <button id="testLoadFlag" onclick="testLoadFlag()">Load Flag</button>
+    <button id="testLoadLevel" onclick="testLoadLevel()">Load Level</button>
+    <button id="nextLevel"">Next Level</button>
+  </div>
+
+  <!-- Parameters:
+    xr-mode-ui="enabled: true; XRMode: xr"                          : UI Button + XR Mode button
+    webxr="optionalFeatures: dom-overlay; overlayElement: #overlay" : Dom overlay for visible buttons in AR mode
+  -->
+  <a-scene 
+    debug
+    xr-mode-ui="enabled: true; XRMode: xr" physics="debug: true; driver: ammo; debugDrawMode: 1;" id="scene"
+    webxr="optionalFeatures: dom-overlay, anchors; overlayElement: #overlay; 
+      requiredFeatures: local-floor, hit-test; referenceSpaceType: local-floor;
+      "
+    click-to-place
+    ar-hit-test="target: #reticle; src: #reticleModel; hitTestType: point; showReticle: true;"
+    level-loader game-logic
+  >
+    <a-asset>
+      <a-asset-item id="reticleModel"
+					  src="reticle.gltf"
+					  response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="playgroundModel" src="playground.gltf"></a-asset-item>
+      <!--audio -->
+      <audio id="hitBall" src="./soundeffects/hitBall.wav" preload="auto" volume="1.0"></audio>
+      <audio id="applause" src="./soundeffects/applauseSound.mp3" preload="auto"></audio>
+
+
+    </a-asset>
+
+    <!-- Lights -->
+    <a-light type="ambient" color="#404040" intensity="3.8"></a-light>
+    <a-light type="ambient" color="#ffffff" intensity="0.4"></a-light>
+    <a-light type="directional" color="#ffffff" intensity="3" position="0 0 0" castShadow="true"></a-light>
+
+    <!-- Light for casting shadows 
+    <a-light id="directionalLight" type="directional" intensity="5" castShadow="true"></a-light>
+    <a-light type="ambient" color="#888"></a-light> -->
+    
+
+    <a-entity text="value: Hallo; color: #BBB" position="0 2 0" scale="5 5 5"></a-entity>
+    <!-- Connect this '<a-entity>' with the '#exit-ar' <button> defined in the overlay. This entity has the 'exit-ar-button' component that will exit ar mode when triggered by the button. -->
+    <a-entity exit-ar-button="element: #exit-ar"></a-entity>
+    <a-entity id="reticle" gltf-model="#reticleModel"></a-entity>
+
+    <!-- Camera -->
+    <a-entity camera look-controls wasd-controls position="0 5 2">
+      <a-entity cursor="fuse: true; fuseTimeout: 500"
+        raycaster="objects:[force-pushable]"
+        position="0 0 -0.5"
+        bruh-geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+        material="color: #FF4444; shader: flat">
+      </a-entity>
+    </a-entity>
+
+    <!-- Dynamic ball -->
+    <a-sphere 
+      id="play-ball" ammo-body="emitCollisionEvents: true;" ammo-shape="type: sphere" 
+      position="0 5 0" radius="0.5" force-pushable color="blue" shadow="cast: true; receive: true" ammo-body="" 
+      scale="0.1 0.1 0.1" moving-dynamic-body
+      sound="src: #hitBall; autoplay: false"
+      >
+    </a-sphere>
+  </a-scene>
+</body>
+</html>

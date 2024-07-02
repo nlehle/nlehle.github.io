@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ball Shadow Test</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+</head>
+<body>
+  <a-scene physics="debug: true; driver: ammo; debugDrawMode: 1;">
+    <!-- Lichtquelle für Schatten -->
+    <a-light type="ambient" color="#888"></a-light>
+    <a-light type="directional" color="#fff" intensity="1" position="-1 2 1" castShadow="true"></a-light>
+
+    <!-- Platte zum Empfang von Schatten -->
+    <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4" shadow="receive: true" ammo-body="type: static" ammo-shape="type: box"></a-plane>
+
+    <!-- Ball, der Schatten wirft -->
+    <a-sphere 
+      id="play-ball" ammo-body="emitCollisionEvents: true;" ammo-shape="type: sphere" 
+      position="0 5 0" radius="0.5" force-pushable color="blue" shadow="cast: true; receive: true" ammo-body="" 
+      scale="0.1 0.1 0.1" moving-dynamic-body
+      sound="src: #hitBall; autoplay: false"
+      >
+    </a-sphere>
+
+    <!-- Kamera -->
+    <a-entity camera look-controls position="0 1.6 5"></a-entity>
+  </a-scene>
+</body>
+</html>
