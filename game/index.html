@@ -230,14 +230,16 @@
       </a-entity>
     </a-entity>
 
-    <!-- Dynamic ball -->
-    <a-sphere 
-      id="play-ball" ammo-body="emitCollisionEvents: true;" ammo-shape="type: sphere" 
-      position="0 5 0" radius="0.5" force-pushable color="blue" shadow="cast: true; receive: true" ammo-body="" 
-      scale="0.1 0.1 0.1" moving-dynamic-body
-      sound="src: #hitBall; autoplay: false"
-      >
-    </a-sphere>
+    <a-entity id="playground">
+      <!-- Dynamic ball -->
+      <a-sphere 
+        id="play-ball" ammo-body="emitCollisionEvents: true;" ammo-shape="type: sphere" 
+        position="0 5 0" radius="0.5" force-pushable color="blue" shadow="cast: true; receive: true" ammo-body="" 
+        scale="0.1 0.1 0.1" moving-dynamic-body
+        sound="src: #hitBall; autoplay: false"
+        >
+      </a-sphere>
+    </a-entity>
   </a-scene>
 </body>
 </html>

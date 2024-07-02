@@ -19,7 +19,7 @@ function loadModel(id, modelUrl, options = {}) {
   }
 
   // New entity with the flag model
-  var scene = document.querySelector('a-scene');
+  var playground = document.querySelector('#playground');
   var entity = document.createElement('a-entity');
 
   entity.setAttribute('id', id);
@@ -54,7 +54,7 @@ function loadModel(id, modelUrl, options = {}) {
   });
 
   entity.setAttribute('scaleAutoUpdate')
-  scene.appendChild(entity);
+  playground.appendChild(entity);
 }
 
 /**

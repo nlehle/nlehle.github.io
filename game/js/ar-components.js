@@ -75,9 +75,13 @@ AFRAME.registerComponent('click-to-place', {
     hitPoint.y -= 2;
 
     playground.setAttribute('position', hitPoint);
-    if (playground.components['ammo-body']) {
-      playground.components['ammo-body'].syncToPhysics();
-      playground.body.activate(); // Need to activate or the object won't move at all because its static
+    var children = playground.children;
+    for (var i = 0; i < children.length; i++) {
+      var child = children[i];
+      if (child.components['ammo-body']) {
+        child.components['ammo-body'].syncToPhysics();
+        child.body.activate(); // Need to activate or the object won't move at all because its static
+      }
     }
     var gameLogic = document.querySelector('[game-logic]').components['game-logic'];
     gameLogic.setState('resetBall');
