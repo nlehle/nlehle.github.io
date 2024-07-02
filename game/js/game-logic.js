@@ -10,8 +10,9 @@ AFRAME.registerComponent('game-logic', {
 
     const nextLevelButton = document.getElementById('nextLevel');
     nextLevelButton.addEventListener('click', () => {
-      const currentLevel = new URLSearchParams(window.location.search).get('level');
-      document.location.search = `?level=${parseInt(currentLevel) + 1}`;
+      let currentLevel = new URLSearchParams(window.location.search).get('level');
+      currentLevel = currentLevel ? parseInt(currentLevel) : 0;
+      document.location.search = `?level=${currentLevel + 1}`;
     });
   },
   setState: /** @param newState {"place" | "resetBall" } */ function (newState) {
