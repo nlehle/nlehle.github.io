@@ -11,7 +11,10 @@ AFRAME.registerComponent('game-logic', {
     const nextLevelButton = document.getElementById('nextLevel');
     nextLevelButton.addEventListener('click', () => {
       let currentLevel = new URLSearchParams(window.location.search).get('level');
-      currentLevel = currentLevel ? parseInt(currentLevel) : 0;
+      currentLevel = parseInt(currentLevel)
+      if (isNaN(currentLevel)) {
+        currentLevel = 0;
+      }
       document.location.search = `?level=${currentLevel + 1}`;
     });
   },
