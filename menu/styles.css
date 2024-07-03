@@ -129,7 +129,7 @@ audio{
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 450px) {
     .menu h1 {
         letter-spacing: 5px;
     }
@@ -144,7 +144,7 @@ audio{
 
     .menu h3::before,
     .menu h3::after {
-        width: 1.5em; 
+        display: none; 
     }
 }
 
@@ -152,11 +152,6 @@ audio{
     .screen,
     video {
         height: 35em;
-    }
-
-    .menu h3::before,
-    .menu h3::after {
-        width: 1.0em; 
     }
 }
 
