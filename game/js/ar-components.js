@@ -191,7 +191,10 @@ AFRAME.registerComponent('load-shape', {
   },
   init: function () {
     this.el.addEventListener('model-loaded', () => {
-      this.el.setAttribute('ammo-shape', {type: this.data.shape, offset: this.data.offset, fit: 'all'});
+      setTimeout(() => {
+        console.info('Pos 1', this.el.object3D.position, this.data.offset)
+        this.el.setAttribute('ammo-shape', {type: this.data.shape, offset: this.data.offset, fit: 'all'});
+      }, 200)
     })
   }
 })
