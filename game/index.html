@@ -173,7 +173,7 @@
       <!-- <button class="ar-button" id="reset">Reset</button>
       <button class="ar-button" id="pushBall" onclick="pushBall()">Push Ball</button> -->
       <button class="ar-button" id="nextLevel">Next Level</button>
-      <button id="toggleWireframe" class="ar-button" onclick="toggleWireframe()">Toggle wireframe</button>
+      <!-- <button id="toggleWireframe" class="ar-button" onclick="toggleWireframe()">Toggle wireframe</button> -->
     </div>
     
     <button id="exit-ar" class="ar-button">Exit AR</button>
@@ -183,6 +183,9 @@
       <progress id="strike-power-progress" value="0" max="100"></progress>
     </div>
     <button id="home-button"><a href="/menu/gameMenu2.html">🏠</a></button>
+    <p style="display: none;" id="hit-test-text">
+      Hit test Success
+    </p>
   </div>
 
 
@@ -192,7 +195,7 @@
   -->
   <a-scene 
     debug
-    xr-mode-ui="enabled: true; XRMode: xr" physics="debug: true; driver: ammo; debugDrawMode: 3;" id="scene"
+    xr-mode-ui="enabled: true; XRMode: xr" physics="debug: false; driver: ammo; debugDrawMode: 3;" id="scene"
     webxr="optionalFeatures: dom-overlay, anchors; overlayElement: #overlay; 
       requiredFeatures: local-floor, hit-test; referenceSpaceType: local-floor;
       "

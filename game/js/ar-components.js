@@ -12,6 +12,19 @@ AFRAME.registerComponent('hide-in-ar-mode', {
   }
 })
 
+AFRAME.registerComponent('show-in-ar-mode', {
+  init: function () {
+    this.el.sceneEl.addEventListener('enter-vr', (ev) => {
+      if (this.el.sceneEl.is('ar-mode')) {
+        this.el.setAttribute('visible', true);
+      }
+    });
+    this.el.sceneEl.addEventListener('exit-vr', (ev) => {
+      this.el.setAttribute('visible', false);
+    });
+  }
+})
+
 AFRAME.registerComponent('force-pushable', {
   schema: {
     force: { default: 10 }
@@ -56,6 +69,14 @@ AFRAME.registerComponent('click-to-place', {
     })
     this.el.addEventListener('ar-hit-test-achieved', (...args) => {
       console.info('ar-hit-test-achieved', args)
+      // alert('ar-hit-test-achieved')
+      const text = document.getElementById('hit-test-text')
+      if (text) {
+        text.style.display = '';
+        setTimeout(() => {
+          text.style.display = 'none';
+        }, 2000)
+      }
     })
     this.el.addEventListener('ar-hit-test-select', (customEvent, ...args) => {
       console.info('ar-hit-test-select', customEvent, args)
