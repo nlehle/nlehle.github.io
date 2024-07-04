@@ -6,7 +6,7 @@
         "type": "playground",
         "name": "playgroundLvl1",
         "collision": "static",
-        "file": "/models/3D_Object/playground1New.glb",
+        "file": "/models/3D_Object/playgroundLvl1Final.glb",
         "rotation": [0, -90, 0],
         "scale": [0.2, 0.2, 0.2],
         "offset": [-4.8, 0, 0]
@@ -26,7 +26,19 @@
         "type": "playground",
         "name": "playgroundLvl2",
         "collision": "static",
-        "file": "/models/3D_Object/playgroundLvl2.glb"
+        "file": "/models/3D_Object/playgroundLvl2.glb",
+        "position": [-5.5, -2.5, -4.3],
+        "rotation": [0, -90, 0],
+        "scale": [2, 2, 2],
+        "offset": [0, 0, 0]
+        }, {
+          "type": "flag",
+          "name": "flag",
+          "collision": "none",
+          "file": "/models/3D_Object/flag.glb",
+          "position": [-4.5, 2.5, -2.5],
+          "rotation": [0, 90, 0],
+          "scale": [0.1, 0.1, 0.1]  
       }]
     },
     {
@@ -35,9 +47,18 @@
         "type": "playground",
         "name": "playgroundLvl3",
         "collision": "static",
-        "file": "/models/3D_Object/playground3final.glb",
-        "rotation": [0, -90, 0],
-        "scale": [0.2, 0.2, 0.2]
+        "file": "/models/3D_Object/playgroundLvl3Final1.glb",
+        "rotation": [0, 90, 0],
+        "scale": [0.2, 0.2, 0.2],
+        "offset": [3.2, 0, -0.24]
+        },{
+        "type": "flag",
+        "name": "flag",
+        "collision": "none",
+        "file": "/models/3D_Object/flag.glb",
+        "position": [-5, 0, -2.25],
+        "rotation": [0, 90, 0],
+        "scale": [0.4, 0.4, 0.4]
       }]
     }
   ]

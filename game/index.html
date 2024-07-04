@@ -127,6 +127,16 @@
       applause.play();
     }
     setInterval(checkBallInHole, 50);
+
+    function toggleWireframe() {
+      const scene = document.getElementById('scene')
+      const drawer = scene.systems.physics.driver.getDebugDrawer()
+      if (drawer.enabled) {
+        drawer.disable()
+      } else {
+        drawer.enable()
+      }
+    }
   </script>
   <style>
     /* By default, hide the DOM Overlay element. */
@@ -164,6 +174,7 @@
       <!-- <button class="ar-button" id="reset">Reset</button>
       <button class="ar-button" id="pushBall" onclick="pushBall()">Push Ball</button> -->
       <button class="ar-button" id="nextLevel">Next Level</button>
+      <button id="toggleWireframe" class="ar-button" onclick="toggleWireframe()">Toggle wireframe</button>
     </div>
 
     <div id="strike-container" style="display: flex; justify-content: center; width: 100%;">
@@ -180,7 +191,7 @@
   -->
   <a-scene 
     debug
-    xr-mode-ui="enabled: true; XRMode: xr" physics="debug: false; driver: ammo; debugDrawMode: 0;" id="scene"
+    xr-mode-ui="enabled: true; XRMode: xr" physics="debug: true; driver: ammo; debugDrawMode: 3;" id="scene"
     webxr="optionalFeatures: dom-overlay, anchors; overlayElement: #overlay; 
       requiredFeatures: local-floor, hit-test; referenceSpaceType: local-floor;
       "
